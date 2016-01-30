@@ -73,7 +73,7 @@ var GiftedMessenger = React.createClass({
     handleSend: React.PropTypes.func,
     onCustomSend: React.PropTypes.func,
     renderCustomText: React.PropTypes.func,
-    renderCustomBubble: React.PropTypes.func,
+    renderCustomMessage: React.PropTypes.func,
     maxHeight: React.PropTypes.number,
     senderName: React.PropTypes.string,
     senderImage: React.PropTypes.object,
