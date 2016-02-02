@@ -169,8 +169,7 @@ var GiftedMessenger = React.createClass({
 
   renderRow(rowData = {}, sectionID = null, rowID = null) {
     if (this.props.renderCustomMessage) {
-      this.props.renderCustomMessage.bind(rowData, sectionId, rowId)
-      return
+      return this.props.renderCustomMessage(rowData, sectionID, rowID)
     }
 
     var diffMessage = null;
@@ -255,6 +254,9 @@ var GiftedMessenger = React.createClass({
   onKeyboardDidShow(e) {
     this.scrollToBottom();
   },
+  onKeyboardDidHide(e) {
+    this.scrollToBottom();
+  },
 
   scrollToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
@@ -271,20 +273,22 @@ var GiftedMessenger = React.createClass({
   },
 
   onSend() {
-    var message = {
-      text: this.state.text.trim(),
-      name: this.props.senderName,
-      image: this.props.senderImage,
-      position: 'right',
-      date: new Date(),
-    };
-    if (this.props.onCustomSend) {
-      this.props.onCustomSend(message);
-    } else {
-      var rowID = this.appendMessage(message);
-      this.props.handleSend(message, rowID);
+    // var message = {
+    //   text: this.state.text.trim(),
+    //   name: this.props.senderName,
+    //   image: this.props.senderImage,
+    //   position: 'right',
+    //   date: new Date(),
+    // };
+    // if (this.props.onCustomSend) {
+    //   this.props.onCustomSend(message);
+    // } else {
+    //   var rowID = this.appendMessage(message);
+      // this.props.handleSend(message, rowID);
+      this.props.handleSend(this.state.text.trim());
       this.onChangeText('');
-    }
+      scrollWithoutAnimationToBottom()
+    // }
   },
 
   postLoadEarlierMessages(messages = [], allLoaded = false) {
@@ -447,14 +451,15 @@ var GiftedMessenger = React.createClass({
           onKeyboardWillShow={this.onKeyboardWillShow}
           onKeyboardDidShow={this.onKeyboardDidShow}
           onKeyboardWillHide={this.onKeyboardWillHide}
+          onKeyboardDidHide={this.onKeyboardDidHide}
 
           /*
             keyboardShouldPersistTaps={false} // @issue keyboardShouldPersistTaps={false} + textInput focused = 2 taps are needed to trigger the ParsedText links
             keyboardDismissMode='interactive'
           */
 
-          keyboardShouldPersistTaps={true}
-          keyboardDismissMode='interactive'
+          keyboardShouldPersistTaps={typeof this.props.keyboardShouldPersistTaps === 'undefined' ? true : this.props.keyboardShouldPersistTaps}
+          keyboardDismissMode={this.props.keyboardDismissMode || 'interactive'}
 
 
           initialListSize={10}
@@ -513,7 +518,6 @@ var GiftedMessenger = React.createClass({
     this.styles = {
       container: {
         flex: 1,
-        backgroundColor: '#FFF',
       },
       listView: {
         flex: 1,
@@ -548,7 +552,7 @@ var GiftedMessenger = React.createClass({
         marginBottom: 8,
       },
       link: {
-        color: '#007aff',
+        // color: '#007aff',
         textDecorationLine: 'underline',
       },
       linkLeft: {
