@@ -82,6 +82,7 @@ var GiftedMessenger = React.createClass({
     hideTextInput: React.PropTypes.bool,
     forceRenderImage: React.PropTypes.bool,
     onChangeText: React.PropTypes.func,
+    menu: React.PropTypes.func,
   },
 
   getInitialState: function() {
@@ -489,6 +490,7 @@ var GiftedMessenger = React.createClass({
     if (this.props.hideTextInput === false) {
       return (
         <View style={this.styles.textInputContainer}>
+          {this.props.menu()}
           <TextInput
             style={this.styles.textInput}
             placeholder={this.props.placeholder}
@@ -501,16 +503,16 @@ var GiftedMessenger = React.createClass({
 
             blurOnSubmit={false}
           />
-          <Button
-            style={this.styles.sendButton}
-            onPress={this.onSend}
-            disabled={this.state.disabled}
-          >
-            {this.props.sendButtonText}
-          </Button>
         </View>
       );
     }
+          // <Button
+          //   style={this.styles.sendButton}
+          //   onPress={this.onSend}
+          //   disabled={this.state.disabled}
+          // >
+          //   {this.props.sendButtonText}
+          // </Button>
     return null;
   },
 
@@ -534,11 +536,11 @@ var GiftedMessenger = React.createClass({
         alignSelf: 'center',
         height: 30,
         width: 100,
-        backgroundColor: '#FFF',
+        backgroundColor: 'transparent',
         flex: 1,
         padding: 0,
         margin: 0,
-        fontSize: 15,
+        fontSize: 17,
       },
       sendButton: {
         marginTop: 11,
