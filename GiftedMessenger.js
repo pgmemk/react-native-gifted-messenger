@@ -288,7 +288,7 @@ var GiftedMessenger = React.createClass({
       // this.props.handleSend(message, rowID);
       this.props.handleSend(this.state.text.trim());
       this.onChangeText('');
-      scrollWithoutAnimationToBottom()
+      this.scrollWithoutAnimationToBottom()
     // }
   },
 
