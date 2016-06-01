@@ -438,12 +438,12 @@ var GiftedMessenger = React.createClass({
           renderFooter={() => {
             return <View onLayout={(event)=>{
               var layout = event.nativeEvent.layout;
+              let isNull = !this.footerY
               this.footerY = layout.y;
+              if (isNull)
+                this.scrollToBottom()
             }}></View>
           }}
-
-
-
 
           style={this.styles.listView}
 
