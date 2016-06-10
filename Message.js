@@ -1,4 +1,5 @@
-import React, {View, Text, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import React from 'react'
 import Bubble from './Bubble';
 import ErrorButton from './ErrorButton';
 
@@ -46,7 +47,7 @@ export default class Message extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   componentWillMount() {
     Object.assign(styles, this.props.styles);
   }
@@ -155,7 +156,7 @@ export default class Message extends React.Component {
           status={rowData.status}
           text={rowData.text}
           renderCustomText={this.props.renderCustomText}
-          
+
           styles={styles}
           />
         {rowData.position === 'right' ? this.renderImage(rowData, rowID, diffMessage, forceRenderImage, onImagePress) : null}

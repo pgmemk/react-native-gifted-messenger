@@ -1,9 +1,8 @@
 'use strict';
 
-var React = require('react-native');
 import Message from './Message';
 var GiftedSpinner = require('react-native-gifted-spinner');
-var {
+import {
   Text,
   View,
   ListView,
@@ -14,7 +13,9 @@ var {
   TouchableHighlight,
   Platform,
   PixelRatio
-} = React;
+} from 'react-native'
+
+import React from 'react'
 
 var moment = require('moment');
 
