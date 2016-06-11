@@ -263,14 +263,14 @@ var GiftedMessenger = React.createClass({
   scrollToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
       var scrollDistance = this.listHeight - this.footerY;
-      this.scrollResponder.scrollTo(-scrollDistance);
+      this.scrollResponder.scrollTo({ y: -scrollDistance, animated: true });
     }
   },
 
   scrollWithoutAnimationToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
       var scrollDistance = this.listHeight - this.footerY;
-      this.scrollResponder.scrollWithoutAnimationTo(-scrollDistance);
+      this.scrollResponder.scrollTo({ y: -scrollDistance, animated: false });
     }
   },
 
