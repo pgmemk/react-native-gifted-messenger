@@ -490,7 +490,6 @@ var GiftedMessenger = React.createClass({
     if (this.props.hideTextInput === false) {
       return (
         <View style={this.styles.textInputContainer}>
-          {this.props.menu()}
           <TextInput
             style={this.styles.textInput}
             placeholder={this.props.placeholder}
@@ -503,6 +502,7 @@ var GiftedMessenger = React.createClass({
 
             blurOnSubmit={false}
           />
+          {this.props.menu()}
         </View>
       );
     }
