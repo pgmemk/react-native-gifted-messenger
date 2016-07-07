@@ -1,9 +1,8 @@
 'use strict';
 
-var React = require('react-native');
 import Message from './Message';
 var GiftedSpinner = require('react-native-gifted-spinner');
-var {
+import {
   Text,
   View,
   ListView,
@@ -14,7 +13,9 @@ var {
   TouchableHighlight,
   Platform,
   PixelRatio
-} = React;
+} from 'react-native'
+
+import React from 'react'
 
 var moment = require('moment');
 
@@ -262,14 +263,14 @@ var GiftedMessenger = React.createClass({
   scrollToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
       var scrollDistance = this.listHeight - this.footerY;
-      this.scrollResponder.scrollTo(-scrollDistance);
+      this.scrollResponder.scrollTo({ y: -scrollDistance, animated: true });
     }
   },
 
   scrollWithoutAnimationToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
       var scrollDistance = this.listHeight - this.footerY;
-      this.scrollResponder.scrollWithoutAnimationTo(-scrollDistance);
+      this.scrollResponder.scrollTo({ y: -scrollDistance, animated: false });
     }
   },
 

@@ -1,4 +1,5 @@
-import React, {View, Text, TouchableHighlight, StyleSheet} from 'react-native';
+import {View, Text, TouchableHighlight, StyleSheet} from 'react-native';
+import React from 'react'
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 let styles = StyleSheet.create({
@@ -30,8 +31,8 @@ export default class ErrorButton extends React.Component {
   componentWillMount() {
     Object.assign(styles, this.props.styles);
   }
-  
-  
+
+
   onPress() {
     this.setState({
       isLoading: true,
