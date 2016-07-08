@@ -496,7 +496,6 @@ var GiftedMessenger = React.createClass({
             placeholder={this.props.placeholder}
             ref='textInput'
             onChangeText={this.onChangeText}
-            multiline={true}
             value={this.state.text}
             autoFocus={this.props.autoFocus}
             returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
