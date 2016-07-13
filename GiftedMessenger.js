@@ -114,6 +114,19 @@ var GiftedMessenger = React.createClass({
     };
   },
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // Case when the 'no network' banner is displayed
+    if (this.props.maxHeight !== nextProps.maxHeight) {
+      var textInputHeight = 0;
+      if (this.props.hideTextInput === false)
+        textInputHeight = 45;
+
+      this.listViewMaxHeight = nextProps.maxHeight - textInputHeight;
+      nextState.height = new Animated.Value(this.listViewMaxHeight)
+    }
+    return true
+  },
+
   getMessage(rowID) {
     if (typeof this._rowIds[this._rowIds.indexOf(rowID)] !== 'undefined') {
       if (typeof this._data[this._rowIds[this._rowIds.indexOf(rowID)]] !== 'undefined') {
