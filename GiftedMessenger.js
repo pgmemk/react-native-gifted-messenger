@@ -438,7 +438,7 @@ var GiftedMessenger = React.createClass({
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
           renderHeader={this.renderLoadEarlierMessages}
-          removeClippedSubviews={true}
+          removeClippedSubviews={false}
           onLayout={(event) => {
             var layout = event.nativeEvent.layout;
             this.listHeight = layout.height;
