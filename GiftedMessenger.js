@@ -14,6 +14,7 @@ import {
   Platform,
   PixelRatio
 } from 'react-native'
+var PULLDOWN_DISTANCE = 40
 
 import React from 'react'
 
@@ -334,22 +335,22 @@ var GiftedMessenger = React.createClass({
               <GiftedSpinner />
             </View>
           );
-        } else {
-          return (
-            <View style={this.styles.loadEarlierMessages}>
-              <Button
-                style={this.styles.loadEarlierMessagesButton}
-                onPress={() => {this.preLoadEarlierMessages()}}
-              >
-                {this.props.loadEarlierMessagesButtonText}
-              </Button>
-            </View>
-          );
         }
       }
     }
     return null;
   },
+          // return (
+          //   <View style={this.styles.loadEarlierMessages}>
+          //     <Button
+          //       style={this.styles.loadEarlierMessagesButton}
+          //       onPress={() => {this.preLoadEarlierMessages()}}
+          //     >
+          //       {this.props.loadEarlierMessagesButtonText}
+          //     </Button>
+          //     <ActivityIndicator/>
+          //   </View>
+          // );
 
   prependMessages(messages = []) {
     var rowID = null;
@@ -438,7 +439,6 @@ var GiftedMessenger = React.createClass({
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
           renderHeader={this.renderLoadEarlierMessages}
-          removeClippedSubviews={false}
           onLayout={(event) => {
             var layout = event.nativeEvent.layout;
             this.listHeight = layout.height;
@@ -450,6 +450,7 @@ var GiftedMessenger = React.createClass({
             }
 
           }}
+          removeClippedSubviews={false}
           renderFooter={() => {
             return <View onLayout={(event)=>{
               var layout = event.nativeEvent.layout;
@@ -473,7 +474,7 @@ var GiftedMessenger = React.createClass({
             keyboardShouldPersistTaps={false} // @issue keyboardShouldPersistTaps={false} + textInput focused = 2 taps are needed to trigger the ParsedText links
             keyboardDismissMode='interactive'
           */
-
+          onScroll={this.handleScroll}
           keyboardShouldPersistTaps={typeof this.props.keyboardShouldPersistTaps === 'undefined' ? true : this.props.keyboardShouldPersistTaps}
           keyboardDismissMode={this.props.keyboardDismissMode || 'interactive'}
 
@@ -487,6 +488,11 @@ var GiftedMessenger = React.createClass({
 
       </Animated.View>
     );
+  },
+  handleScroll(e) {
+    if (e.nativeEvent.contentOffset.y <= -PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
+      this.preLoadEarlierMessages()
+    }
   },
 
   render() {
@@ -581,6 +587,7 @@ var GiftedMessenger = React.createClass({
         height: 44,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#eeeeee'
       },
       loadEarlierMessagesButton: {
         fontSize: 14,
