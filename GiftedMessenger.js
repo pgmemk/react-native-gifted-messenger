@@ -1,7 +1,7 @@
 'use strict';
 
 import Message from './Message';
-var GiftedSpinner = require('react-native-gifted-spinner');
+// var GiftedSpinner = require('react-native-gifted-spinner');
 import {
   Text,
   View,
@@ -9,6 +9,7 @@ import {
   TextInput,
   Dimensions,
   Animated,
+  ActivityIndicator,
   Image,
   TouchableHighlight,
   Platform,
@@ -93,7 +94,7 @@ var GiftedMessenger = React.createClass({
 
     var textInputHeight = 0;
     if (this.props.hideTextInput === false) {
-      textInputHeight = 44;
+      textInputHeight = 45;
     }
 
     this.listViewMaxHeight = this.props.maxHeight - textInputHeight;
@@ -332,7 +333,7 @@ var GiftedMessenger = React.createClass({
         if (this.state.isLoadingEarlierMessages === true) {
           return (
             <View style={this.styles.loadEarlierMessages}>
-              <GiftedSpinner />
+              <ActivityIndicator />
             </View>
           );
         }
@@ -545,7 +546,7 @@ var GiftedMessenger = React.createClass({
         flex: 1,
       },
       textInputContainer: {
-        height: 44,
+        height: 45,
         borderTopWidth: 1 / PixelRatio.get(),
         borderColor: '#b2b2b2',
         flexDirection: 'row',
