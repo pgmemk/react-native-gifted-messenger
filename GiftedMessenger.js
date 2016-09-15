@@ -267,13 +267,23 @@ var GiftedMessenger = React.createClass({
       duration: 200,
     }).start();
   },
-
+  // For android
   onKeyboardDidShow(e) {
     this.scrollToBottom();
+    if (Platform.OS === 'android')
+      this.onKeyboardWillShow(e)
   },
   onKeyboardDidHide(e) {
     this.scrollToBottom();
+    if (Platform.OS === 'android')
+      this.onKeyboardWillHide(e)
   },
+  // onKeyboardDidShow(e) {
+  //   this.scrollToBottom();
+  // },
+  // onKeyboardDidHide(e) {
+  //   this.scrollToBottom();
+  // },
 
   scrollToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
@@ -467,8 +477,9 @@ var GiftedMessenger = React.createClass({
 
           // not working android RN 0.14.2
           onKeyboardWillShow={this.onKeyboardWillShow}
-          onKeyboardDidShow={this.onKeyboardDidShow}
           onKeyboardWillHide={this.onKeyboardWillHide}
+
+          onKeyboardDidShow={this.onKeyboardDidShow}
           onKeyboardDidHide={this.onKeyboardDidHide}
 
           /*
