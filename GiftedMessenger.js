@@ -15,7 +15,7 @@ import {
   Platform,
   PixelRatio
 } from 'react-native'
-var PULLDOWN_DISTANCE = 40
+var PULLDOWN_DISTANCE = Platform.OS === 'ios' ? -40 : 0
 
 import React from 'react'
 
@@ -502,7 +502,7 @@ var GiftedMessenger = React.createClass({
     );
   },
   handleScroll(e) {
-    if (e.nativeEvent.contentOffset.y <= -PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
+    if (e.nativeEvent.contentOffset.y <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
     }
   },
