@@ -113,6 +113,7 @@ var GiftedMessenger = React.createClass({
       isLoadingEarlierMessages: false,
       allLoaded: false,
       appearAnim: new Animated.Value(0),
+      menuButtonShow: true
     };
   },
 
@@ -270,11 +271,13 @@ var GiftedMessenger = React.createClass({
   // For android
   onKeyboardDidShow(e) {
     this.scrollToBottom();
+    this.setState({menuButtonShow: false})
     if (Platform.OS === 'android')
       this.onKeyboardWillShow(e)
   },
   onKeyboardDidHide(e) {
     this.scrollToBottom();
+    this.setState({menuButtonShow: true})
     if (Platform.OS === 'android')
       this.onKeyboardWillHide(e)
   },
@@ -534,7 +537,7 @@ var GiftedMessenger = React.createClass({
             onSubmitEditing={this.props.submitOnReturn ? this.onSend : null}
             blurOnSubmit={false}
           />
-          {this.props.menu()}
+          {this.props.menu(this.state.menuButtonShow)}
         </View>
       );
     }
