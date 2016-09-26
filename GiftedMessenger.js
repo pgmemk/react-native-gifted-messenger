@@ -100,9 +100,11 @@ var GiftedMessenger = React.createClass({
     this.listViewMaxHeight = this.props.maxHeight - textInputHeight;
 
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => {
-      if (typeof r1.status !== 'undefined') {
-        return true;
-      }
+      // if (typeof r1.status !== 'undefined') {
+      //   return true;
+      // }
+      if (r1 === r2  &&  (this.props.messageSent  &&  r1 === this.props.messageSent))
+        return true
       return r1 !== r2;
     }});
     return {
