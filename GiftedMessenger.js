@@ -496,8 +496,8 @@ var GiftedMessenger = React.createClass({
           keyboardDismissMode={this.props.keyboardDismissMode || 'interactive'}
 
 
-          initialListSize={10}
-          pageSize={this.props.messages.length}
+          initialListSize={20}
+          pageSize={20}
 
 
           {...this.props}
