@@ -509,7 +509,7 @@ var GiftedMessenger = React.createClass({
     );
   },
   handleScroll(e) {
-    if (e.nativeEvent.contentOffset.y <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
+    if (this.refs.listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
     }
   },
