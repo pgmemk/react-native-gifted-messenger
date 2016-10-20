@@ -55,6 +55,8 @@ var GiftedMessenger = React.createClass({
       submitOnReturn: false,
       forceRenderImage: false,
       onChangeText: (text) => {},
+      initialListSize: 10,
+      pageSize: 10
     };
   },
 
@@ -496,8 +498,8 @@ var GiftedMessenger = React.createClass({
           keyboardDismissMode={this.props.keyboardDismissMode || 'interactive'}
 
 
-          initialListSize={20}
-          pageSize={20}
+          initialListSize={this.props.initialListSize}
+          pageSize={this.props.pageSize}
 
 
           {...this.props}
