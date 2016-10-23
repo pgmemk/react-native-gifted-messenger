@@ -18,6 +18,7 @@ import {
 var PULLDOWN_DISTANCE = Platform.OS === 'ios' ? -40 : 0
 
 import React from 'react'
+import shallowequal from 'shallowequal'
 
 var moment = require('moment');
 
@@ -129,7 +130,13 @@ var GiftedMessenger = React.createClass({
       this.listViewMaxHeight = nextProps.maxHeight - textInputHeight;
       nextState.height = new Animated.Value(this.listViewMaxHeight)
     }
-    return true
+    if (!shallowequal(this.props, nextProps))
+      return true;
+
+    if (!shallowequal(this.state, nextState))
+      return true;
+
+    return false
   },
 
   getMessage(rowID) {
