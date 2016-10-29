@@ -54,6 +54,7 @@ var GiftedMessenger = React.createClass({
       onImagePress: null,
       hideTextInput: false,
       submitOnReturn: false,
+      underlineColorAndroid: 'transparent',
       forceRenderImage: false,
       onChangeText: (text) => {},
       initialListSize: 10,
@@ -86,6 +87,7 @@ var GiftedMessenger = React.createClass({
     sendButtonText: React.PropTypes.string,
     onImagePress: React.PropTypes.func,
     hideTextInput: React.PropTypes.bool,
+    underlineColorAndroid: React.PropTypes.string,
     forceRenderImage: React.PropTypes.bool,
     onChangeText: React.PropTypes.func,
     menu: React.PropTypes.func,
@@ -543,6 +545,7 @@ var GiftedMessenger = React.createClass({
             ref='textInput'
             onChangeText={this.onChangeText}
             value={this.state.text}
+            underlineColorAndroid={this.props.underlineColorAndroid}
             autoFocus={this.props.autoFocus}
             returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
             onSubmitEditing={this.props.submitOnReturn ? this.onSend : null}
