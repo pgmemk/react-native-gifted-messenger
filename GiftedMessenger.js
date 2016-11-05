@@ -575,7 +575,7 @@ var GiftedMessenger = React.createClass({
       },
       textInputContainer: {
         height: 45,
-        borderTopWidth: 1 / PixelRatio.get(),
+        borderTopWidth: Platform.OS === 'android' ? 1 : 1 / PixelRatio.get(),
         borderColor: '#b2b2b2',
         flexDirection: 'row',
         paddingLeft: 10,
