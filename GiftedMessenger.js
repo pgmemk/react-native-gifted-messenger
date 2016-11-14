@@ -110,6 +110,9 @@ var GiftedMessenger = React.createClass({
       // }
       if (r1 === r2  &&  (this.props.messageSent  &&  r1 === this.props.messageSent))
         return true
+      // HACK to force update of the rows in chat when formRequest was added to eliminate FR with the same form
+      if (this.props.addedItem)
+        return true
       return r1 !== r2;
     }});
     return {
