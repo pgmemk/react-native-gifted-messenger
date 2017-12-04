@@ -108,11 +108,11 @@ var GiftedMessenger = React.createClass({
       // if (typeof r1.status !== 'undefined') {
       //   return true;
       // }
-      if (r1 === r2  &&  (this.props.messageSent  &&  r1 === this.props.messageSent))
+      if (r1 === r2) //  &&  (this.props.messageSent  &&  r1 === this.props.messageSent))
         return true
       // HACK to force update of the rows in chat when formRequest was added to eliminate FR with the same form
-      if (this.props.addedItem)
-        return true
+      // if (this.props.addedItem)
+      //   return true
       return r1 !== r2;
     }});
     return {
@@ -131,7 +131,7 @@ var GiftedMessenger = React.createClass({
     // Case when the 'no network' banner is displayed
     if (this.props.maxHeight !== nextProps.maxHeight) {
       var textInputHeight = 0;
-      if (this.props.hideTextInput === false)
+      if (nextProps.hideTextInput === false)
         textInputHeight = 45;
 
       this.listViewMaxHeight = nextProps.maxHeight - textInputHeight;
