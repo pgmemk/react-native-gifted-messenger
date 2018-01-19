@@ -15,7 +15,11 @@ import {
   Platform,
   PixelRatio
 } from 'react-native'
-var PULLDOWN_DISTANCE = (Platform.OS === 'ios' && -40)  || (Platform.OS === 'android'  &&  0)  ||  1
+var PULLDOWN_DISTANCE = Platform.select({
+      ios: -40,
+      android: 0,
+      web: 1
+    })
 
 import React from 'react'
 import shallowequal from 'shallowequal'
