@@ -24,6 +24,7 @@ var PULLDOWN_DISTANCE = Platform.select({
 
 import React, { Component } from 'react'
 import shallowequal from 'shallowequal'
+import autobind from 'autobind-decorator'
 
 var moment = require('moment');
 
@@ -59,14 +60,6 @@ class GiftedMessenger extends Component {
       //   return true
       return r1 !== r2;
     }});
-
-    this.onKeyboardWillShow = this.onKeyboardWillShow.bind(this)
-    this.onKeyboardWillHide = this.onKeyboardWillHide.bind(this)
-    this.onKeyboardDidShow = this.onKeyboardDidShow.bind(this)
-    this.onKeyboardDidHide = this.onKeyboardDidHide.bind(this)
-    this.renderRow = this.renderRow.bind(this)
-    this.renderDate = this.renderDate.bind(this)
-    this.renderLoadEarlierMessages = this.renderLoadEarlierMessages.bind(this)
 
     this.state = {
       dataSource: ds.cloneWithRows([]),
@@ -265,7 +258,7 @@ class GiftedMessenger extends Component {
   }
 
   componentDidMount() {
-    this.scrollResponder = this.refs.listView.getScrollResponder();
+    this.scrollResponder = this._listView.getScrollResponder();
 
     if (this.props.messages.length > 0) {
       this.appendMessages(this.props.messages);
@@ -470,6 +463,12 @@ class GiftedMessenger extends Component {
     }
   }
 
+  _setListViewRef = ref => {
+    if (ref) {
+      this._listView = ref
+    }
+  }
+
   renderAnimatedView() {
     return (
       <Animated.View
@@ -479,7 +478,7 @@ class GiftedMessenger extends Component {
 
       >
         <ListView
-          ref='listView'
+          ref={this._setListViewRef}
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
           renderHeader={this.renderLoadEarlierMessages}
@@ -535,7 +534,7 @@ class GiftedMessenger extends Component {
     );
   }
   handleScroll(e) {
-    if (this.refs.listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
+    if (this._listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
     }
   }
@@ -645,4 +644,4 @@ class GiftedMessenger extends Component {
   }
 }
 
-module.exports = GiftedMessenger;
+module.exports = autobind(GiftedMessenger);

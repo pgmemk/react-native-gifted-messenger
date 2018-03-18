@@ -29,6 +29,7 @@
   ],
   "homepage": "https://github.com/FaridSafi/react-native-gifted-messenger#readme",
   "dependencies": {
+    "autobind-decorator": "^2.1.0",
     "moment": "^2.10.6",
     "prop-types": "^15.5",
     "react-native-button": "^2.3.0",
