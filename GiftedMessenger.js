@@ -1,5 +1,6 @@
 'use strict';
 
+import PropTypes from 'prop-types'
 import Message from './Message';
 // var GiftedSpinner = require('react-native-gifted-spinner');
 import {
@@ -21,83 +22,22 @@ var PULLDOWN_DISTANCE = Platform.select({
       web: 1
     })
 
-import React from 'react'
+import React, { Component } from 'react'
 import shallowequal from 'shallowequal'
 
 var moment = require('moment');
 
 var Button = require('react-native-button');
 
-var GiftedMessenger = React.createClass({
+class GiftedMessenger extends Component {
 
-  firstDisplay: true,
-  listHeight: 0,
-  footerY: 0,
+  firstDisplay = true
+  listHeight = 0
+  footerY = 0
 
-  getDefaultProps() {
-    return {
-      displayNames: true,
-      placeholder: 'Type a message...',
-      styles: {},
-      autoFocus: true,
-      onErrorButtonPress: (message, rowID) => {},
-      loadEarlierMessagesButton: false,
-      loadEarlierMessagesButtonText: 'Load earlier messages',
-      onLoadEarlierMessages: (oldestMessage, callback) => {},
-      parseText: false,
-      handleUrlPress: (url) => {},
-      handlePhonePress: (phone) => {},
-      handleEmailPress: (email) => {},
-      initialMessages: [],
-      messages: [],
-      handleSend: (message, rowID) => {},
-      maxHeight: Dimensions.get('window').height,
-      senderName: 'Sender',
-      senderImage: null,
-      sendButtonText: 'Send',
-      onImagePress: null,
-      hideTextInput: false,
-      submitOnReturn: false,
-      underlineColorAndroid: 'transparent',
-      forceRenderImage: false,
-      onChangeText: (text) => {},
-      initialListSize: 10,
-      pageSize: 10
-    };
-  },
+  constructor(props) {
+    super(props)
 
-  propTypes: {
-    displayNames: React.PropTypes.bool,
-    placeholder: React.PropTypes.string,
-    styles: React.PropTypes.object,
-    autoFocus: React.PropTypes.bool,
-    onErrorButtonPress: React.PropTypes.func,
-    loadEarlierMessagesButton: React.PropTypes.bool,
-    loadEarlierMessagesButtonText: React.PropTypes.string,
-    onLoadEarlierMessages: React.PropTypes.func,
-    parseText: React.PropTypes.bool,
-    handleUrlPress: React.PropTypes.func,
-    handlePhonePress: React.PropTypes.func,
-    handleEmailPress: React.PropTypes.func,
-    initialMessages: React.PropTypes.array,
-    messages: React.PropTypes.array,
-    handleSend: React.PropTypes.func,
-    onCustomSend: React.PropTypes.func,
-    renderCustomText: React.PropTypes.func,
-    renderCustomMessage: React.PropTypes.func,
-    maxHeight: React.PropTypes.number,
-    senderName: React.PropTypes.string,
-    senderImage: React.PropTypes.object,
-    sendButtonText: React.PropTypes.string,
-    onImagePress: React.PropTypes.func,
-    hideTextInput: React.PropTypes.bool,
-    underlineColorAndroid: React.PropTypes.string,
-    forceRenderImage: React.PropTypes.bool,
-    onChangeText: React.PropTypes.func,
-    menu: React.PropTypes.func,
-  },
-
-  getInitialState: function() {
     this._data = [];
     this._rowIds = [];
 
@@ -119,7 +59,16 @@ var GiftedMessenger = React.createClass({
       //   return true
       return r1 !== r2;
     }});
-    return {
+
+    this.onKeyboardWillShow = this.onKeyboardWillShow.bind(this)
+    this.onKeyboardWillHide = this.onKeyboardWillHide.bind(this)
+    this.onKeyboardDidShow = this.onKeyboardDidShow.bind(this)
+    this.onKeyboardDidHide = this.onKeyboardDidHide.bind(this)
+    this.renderRow = this.renderRow.bind(this)
+    this.renderDate = this.renderDate.bind(this)
+    this.renderLoadEarlierMessages = this.renderLoadEarlierMessages.bind(this)
+
+    this.state = {
       dataSource: ds.cloneWithRows([]),
       text: '',
       disabled: true,
@@ -128,8 +77,69 @@ var GiftedMessenger = React.createClass({
       allLoaded: false,
       appearAnim: new Animated.Value(0),
       menuButtonShow: true
-    };
-  },
+    }
+  };
+
+  static defaultProps = {
+    displayNames: true,
+    placeholder: 'Type a message...',
+    styles: {},
+    autoFocus: true,
+    onErrorButtonPress: (message, rowID) => {},
+    loadEarlierMessagesButton: false,
+    loadEarlierMessagesButtonText: 'Load earlier messages',
+    onLoadEarlierMessages: (oldestMessage, callback) => {},
+    parseText: false,
+    handleUrlPress: (url) => {},
+    handlePhonePress: (phone) => {},
+    handleEmailPress: (email) => {},
+    initialMessages: [],
+    messages: [],
+    handleSend: (message, rowID) => {},
+    maxHeight: Dimensions.get('window').height,
+    senderName: 'Sender',
+    senderImage: null,
+    sendButtonText: 'Send',
+    onImagePress: null,
+    hideTextInput: false,
+    submitOnReturn: false,
+    underlineColorAndroid: 'transparent',
+    forceRenderImage: false,
+    onChangeText: (text) => {},
+    initialListSize: 10,
+    pageSize: 10
+  };
+
+  static propTypes = {
+    displayNames: PropTypes.bool,
+    placeholder: PropTypes.string,
+    styles: PropTypes.object,
+    autoFocus: PropTypes.bool,
+    onErrorButtonPress: PropTypes.func,
+    loadEarlierMessagesButton: PropTypes.bool,
+    loadEarlierMessagesButtonText: PropTypes.string,
+    onLoadEarlierMessages: PropTypes.func,
+    parseText: PropTypes.bool,
+    handleUrlPress: PropTypes.func,
+    handlePhonePress: PropTypes.func,
+    handleEmailPress: PropTypes.func,
+    initialMessages: PropTypes.array,
+    messages: PropTypes.array,
+    handleSend: PropTypes.func,
+    onCustomSend: PropTypes.func,
+    renderCustomText: PropTypes.func,
+    renderCustomMessage: PropTypes.func,
+    maxHeight: PropTypes.number,
+    senderName: PropTypes.string,
+    senderImage: PropTypes.object,
+    sendButtonText: PropTypes.string,
+    onImagePress: PropTypes.func,
+    hideTextInput: PropTypes.bool,
+    underlineColorAndroid: PropTypes.string,
+    forceRenderImage: PropTypes.bool,
+    onChangeText: PropTypes.func,
+    menu: PropTypes.func,
+  };
 
   shouldComponentUpdate(nextProps, nextState) {
     // Case when the 'no network' banner is displayed
@@ -148,7 +158,7 @@ var GiftedMessenger = React.createClass({
       return true;
 
     return false
-  },
+  }
 
   getMessage(rowID) {
     if (typeof this._rowIds[this._rowIds.indexOf(rowID)] !== 'undefined') {
@@ -157,7 +167,7 @@ var GiftedMessenger = React.createClass({
       }
     }
     return null;
-  },
+  }
 
   getPreviousMessage(rowID) {
     if (typeof this._rowIds[this._rowIds.indexOf(rowID - 1)] !== 'undefined') {
@@ -166,7 +176,7 @@ var GiftedMessenger = React.createClass({
       }
     }
     return null;
-  },
+  }
 
   getNextMessage(rowID) {
     if (typeof this._rowIds[this._rowIds.indexOf(rowID + 1)] !== 'undefined') {
@@ -175,7 +185,7 @@ var GiftedMessenger = React.createClass({
       }
     }
     return null;
-  },
+  }
 
   renderDate(rowData = {}, rowID = null) {
     var diffMessage = null;
@@ -203,7 +213,7 @@ var GiftedMessenger = React.createClass({
       }
     }
     return null;
-  },
+  }
 
   renderRow(rowData = {}, sectionID = null, rowID = null) {
     if (this.props.renderCustomMessage) {
@@ -235,7 +245,7 @@ var GiftedMessenger = React.createClass({
         />
       </View>
     )
-  },
+  }
 
   onChangeText(text) {
     this.setState({
@@ -252,7 +262,7 @@ var GiftedMessenger = React.createClass({
     }
 
     this.props.onChangeText(text);
-  },
+  }
 
   componentDidMount() {
     this.scrollResponder = this.refs.listView.getScrollResponder();
@@ -267,40 +277,40 @@ var GiftedMessenger = React.createClass({
       });
     }
 
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     this._data = [];
     this._rowIds = [];
     this.appendMessages(nextProps.messages);
-  },
+  }
 
   onKeyboardWillHide(e) {
     Animated.timing(this.state.height, {
       toValue: this.listViewMaxHeight,
       duration: 150,
     }).start();
-  },
+  }
 
   onKeyboardWillShow(e) {
     Animated.timing(this.state.height, {
       toValue: this.listViewMaxHeight - (e.endCoordinates ? e.endCoordinates.height : e.end.height),
       duration: 200,
     }).start();
-  },
+  }
   // For android
   onKeyboardDidShow(e) {
     this.scrollToBottom();
     this.setState({menuButtonShow: false})
     if (Platform.OS === 'android')
       this.onKeyboardWillShow(e)
-  },
+  }
   onKeyboardDidHide(e) {
     this.scrollToBottom();
     this.setState({menuButtonShow: true})
     if (Platform.OS === 'android')
       this.onKeyboardWillHide(e)
-  },
+  }
   // onKeyboardDidShow(e) {
   //   this.scrollToBottom();
   // },
@@ -313,14 +323,14 @@ var GiftedMessenger = React.createClass({
       var scrollDistance = this.listHeight - this.footerY;
       this.scrollResponder.scrollTo({ y: -scrollDistance, animated: true });
     }
-  },
+  }
 
   scrollWithoutAnimationToBottom() {
     if (this.listHeight && this.footerY && this.footerY > this.listHeight) {
       var scrollDistance = this.listHeight - this.footerY;
       this.scrollResponder.scrollTo({ y: -scrollDistance, animated: false });
     }
-  },
+  }
 
   onSend() {
     // var message = {
@@ -339,7 +349,7 @@ var GiftedMessenger = React.createClass({
       this.onChangeText('');
       this.scrollWithoutAnimationToBottom()
     // }
-  },
+  }
 
   postLoadEarlierMessages(messages = [], allLoaded = false) {
     this.prependMessages(messages);
@@ -351,14 +361,14 @@ var GiftedMessenger = React.createClass({
         allLoaded: true,
       });
     }
-  },
+  }
 
   preLoadEarlierMessages() {
     this.setState({
       isLoadingEarlierMessages: true
     });
     this.props.onLoadEarlierMessages(this._data[this._rowIds[this._rowIds.length - 1]], this.postLoadEarlierMessages);
-  },
+  }
 
   renderLoadEarlierMessages() {
     if (this.props.loadEarlierMessagesButton === true) {
@@ -373,7 +383,7 @@ var GiftedMessenger = React.createClass({
       }
     }
     return null;
-  },
+  }
           // return (
           //   <View style={this.styles.loadEarlierMessages}>
           //     <Button
@@ -397,12 +407,12 @@ var GiftedMessenger = React.createClass({
       dataSource: this.state.dataSource.cloneWithRows(this._data, this._rowIds),
     });
     return rowID;
-  },
+  }
 
   prependMessage(message = {}) {
     var rowID = this.prependMessages([message]);
     return rowID;
-  },
+  }
 
   appendMessages(messages = []) {
     var rowID = null;
@@ -418,7 +428,7 @@ var GiftedMessenger = React.createClass({
     });
 
     return rowID;
-  },
+  }
 
   appendMessage(message = {}, scrollToBottom = true) {
     var rowID = this.appendMessages([message]);
@@ -431,13 +441,13 @@ var GiftedMessenger = React.createClass({
     }
 
     return rowID;
-  },
+  }
 
   refreshRows() {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this._data, this._rowIds),
     });
-  },
+  }
 
   setMessageStatus(status = '', rowID) {
     if (status === 'ErrorButton') {
@@ -458,7 +468,7 @@ var GiftedMessenger = React.createClass({
         this.refreshRows();
       }
     }
-  },
+  }
 
   renderAnimatedView() {
     return (
@@ -523,12 +533,12 @@ var GiftedMessenger = React.createClass({
 
       </Animated.View>
     );
-  },
+  }
   handleScroll(e) {
     if (this.refs.listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
     }
-  },
+  }
 
   render() {
     return (
@@ -540,7 +550,7 @@ var GiftedMessenger = React.createClass({
         {this.renderTextInput()}
       </View>
     )
-  },
+  }
 
   renderTextInput() {
     if (this.props.hideTextInput === false) {
@@ -570,7 +580,7 @@ var GiftedMessenger = React.createClass({
           //   {this.props.sendButtonText}
           // </Button>
     return null;
-  },
+  }
 
   componentWillMount() {
     this.styles = {
@@ -632,7 +642,7 @@ var GiftedMessenger = React.createClass({
     };
 
     Object.assign(this.styles, this.props.styles);
-  },
-});
+  }
+}
 
 module.exports = GiftedMessenger;
