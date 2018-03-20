@@ -33,7 +33,7 @@
     "moment": "^2.10.6",
     "prop-types": "^15.5",
     "react-native-button": "^2.3.0",
-    "react-native-gifted-spinner": "0.0.4",
+    "react-native-gifted-spinner": "^0.1.0",
     "shallowequal": "^0.2.2"
   },
   "gitHead": "a37196cdb9f528825c81c713844e64ccb0d7e223",
