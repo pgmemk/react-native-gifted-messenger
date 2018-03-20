@@ -1,5 +1,6 @@
 import {Text, View, Animated, Image, StyleSheet} from 'react-native';
 import React from 'react'
+import PropTypes from 'prop-types'
 
 let styles = StyleSheet.create({
   bubble: {
@@ -73,8 +74,8 @@ export default class Bubble extends React.Component {
 }
 
 Bubble.propTypes = {
-  position: React.PropTypes.oneOf(['left','right']),
-  status: React.PropTypes.string,
-  text: React.PropTypes.string,
-  renderCustomText: React.PropTypes.func
+  position: PropTypes.oneOf(['left','right']),
+  status: PropTypes.string,
+  text: PropTypes.string,
+  renderCustomText: PropTypes.func
 }
