@@ -596,7 +596,7 @@ var GiftedMessenger = React.createClass({
         flex: 1,
         padding: 0,
         margin: 0,
-        marginTop: -5,
+        marginTop: Platform.OS === 'web' ? 5 : -5,
         fontSize: 17,
       },
       sendButton: {
