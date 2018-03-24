@@ -50,15 +50,16 @@ class GiftedMessenger extends Component {
     this.listViewMaxHeight = this.props.maxHeight - textInputHeight;
 
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => {
-      // if (typeof r1.status !== 'undefined') {
-      //   return true;
-      // }
-      if (r1 === r2) //  &&  (this.props.messageSent  &&  r1 === this.props.messageSent))
-        return true
-      // HACK to force update of the rows in chat when formRequest was added to eliminate FR with the same form
-      // if (this.props.addedItem)
+      // // if (typeof r1.status !== 'undefined') {
+      // //   return true;
+      // // }
+      // if (r1 === r2) //  &&  (this.props.messageSent  &&  r1 === this.props.messageSent))
       //   return true
-      return r1 !== r2;
+      // // HACK to force update of the rows in chat when formRequest was added to eliminate FR with the same form
+      // // if (this.props.addedItem)
+      // //   return true
+      return !shallowequal(r1, r2)
+      // // return r1 !== r2;
     }});
 
     this.state = {
