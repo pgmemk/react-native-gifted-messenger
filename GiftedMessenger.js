@@ -44,7 +44,7 @@ class GiftedMessenger extends Component {
 
     var textInputHeight = 0;
     if (this.props.hideTextInput === false) {
-      textInputHeight = 45;
+      textInputHeight = this.props.textInputHeight;
     }
 
     this.listViewMaxHeight = this.props.maxHeight - textInputHeight;
@@ -140,7 +140,7 @@ class GiftedMessenger extends Component {
     if (this.props.maxHeight !== nextProps.maxHeight) {
       var textInputHeight = 0;
       if (nextProps.hideTextInput === false)
-        textInputHeight = 45;
+        textInputHeight = nextProps.textInputHeight;
 
       this.listViewMaxHeight = nextProps.maxHeight - textInputHeight;
       nextState.height = new Animated.Value(this.listViewMaxHeight)
@@ -591,7 +591,7 @@ class GiftedMessenger extends Component {
         flex: 1,
       },
       textInputContainer: {
-        height: 45,
+        height: this.props.textInputHeight,
         borderTopWidth: Platform.OS === 'android' ? 1 : 1 / PixelRatio.get(),
         borderColor: '#b2b2b2',
         flexDirection: 'row',
