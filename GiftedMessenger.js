@@ -339,6 +339,8 @@ class GiftedMessenger extends Component {
     // } else {
     //   var rowID = this.appendMessage(message);
       // this.props.handleSend(message, rowID);
+      if (Platform.OS === 'android')
+        this.onKeyboardWillHide()
       this.props.handleSend(this.state.text.trim());
       this.onChangeText('');
       this.scrollWithoutAnimationToBottom()
