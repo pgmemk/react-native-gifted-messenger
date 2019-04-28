@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types'
 import Message from './Message';
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard'
 // var GiftedSpinner = require('react-native-gifted-spinner');
 import {
   Text,
