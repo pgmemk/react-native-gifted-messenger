@@ -327,24 +327,13 @@ class GiftedMessenger extends Component {
   }
 
   onSend() {
-    // var message = {
-    //   text: this.state.text.trim(),
-    //   name: this.props.senderName,
-    //   image: this.props.senderImage,
-    //   position: 'right',
-    //   date: new Date(),
-    // };
-    // if (this.props.onCustomSend) {
-    //   this.props.onCustomSend(message);
-    // } else {
-    //   var rowID = this.appendMessage(message);
-      // this.props.handleSend(message, rowID);
-      if (Platform.OS === 'android')
-        this.onKeyboardWillHide()
-      this.props.handleSend(this.state.text.trim());
-      this.onChangeText('');
-      this.scrollWithoutAnimationToBottom()
-    // }
+    if (Platform.OS === 'android') {
+      dismissKeyboard()
+      this.onKeyboardDidHide()
+    }
+    this.props.handleSend(this.state.text.trim());
+    this.onChangeText('');
+    this.scrollWithoutAnimationToBottom()
   }
 
   postLoadEarlierMessages(messages = [], allLoaded = false) {
@@ -539,6 +528,10 @@ class GiftedMessenger extends Component {
   handleScroll(e) {
     if (this._listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
+    }
+    if (Platform.OS === 'android'  &&  !this.state.menuButtonShow) {
+      dismissKeyboard()
+      this.onKeyboardDidHide()
     }
   }
 
