@@ -530,7 +530,16 @@ class GiftedMessenger extends Component {
     if (this._listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
     }
-    if (Platform.OS === 'android'  &&  !this.state.menuButtonShow) {
+    if (Platform.OS !== 'android'  ||  this.state.menuButtonShow)
+      return
+    const { navigator } = this.props
+    if (!navigator)
+      return
+    const routes = navigator.getCurrentRoutes()
+    // HACK: the scroll event is propagated from NewResource component
+    // that is pushed on top of Chat component and causes keyboard dismissal
+    // in a wrong component
+    if (routes[routes.length - 1].componentName === 'MessageList') {
       dismissKeyboard()
       this.onKeyboardDidHide()
     }
