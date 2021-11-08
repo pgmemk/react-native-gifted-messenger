@@ -11,6 +11,7 @@ import {
   TextInput,
   Dimensions,
   Animated,
+  SafeAreaView,
   ActivityIndicator,
   Image,
   TouchableHighlight,
@@ -551,7 +552,9 @@ class GiftedMessenger extends Component {
         style={this.styles.container}
         ref='container'
       >
-        {this.renderAnimatedView()}
+        <SafeAreaView style={this.styles.container}>
+          {this.renderAnimatedView()}
+        </SafeAreaView>
         {this.renderTextInput()}
       </View>
     )
