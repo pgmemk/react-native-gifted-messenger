@@ -103,7 +103,9 @@ class GiftedMessenger extends Component {
     forceRenderImage: false,
     onChangeText: (text) => {},
     initialListSize: 10,
-    pageSize: 10
+    pageSize: 10,
+    onScroll: () => {},
+    onMessageLayout: () => {},
   };
 
   static propTypes = {
@@ -135,6 +137,8 @@ class GiftedMessenger extends Component {
     forceRenderImage: PropTypes.bool,
     onChangeText: PropTypes.func,
     menu: PropTypes.func,
+    onScroll: PropTypes.func,
+    onMessageLayout: PropTypes.func,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -212,35 +216,42 @@ class GiftedMessenger extends Component {
   }
 
   renderRow(rowData = {}, sectionID = null, rowID = null) {
+    let messageContent;
+
     if (this.props.renderCustomMessage) {
-      return this.props.renderCustomMessage(rowData, sectionID, rowID)
-    }
-
-    var diffMessage = null;
-    if (rowData.isOld === true) {
-      diffMessage = this.getPreviousMessage(rowID);
+      messageContent = this.props.renderCustomMessage(rowData, sectionID, rowID);
     } else {
-      diffMessage = this.getNextMessage(rowID);
+      var diffMessage = null;
+      if (rowData.isOld === true) {
+        diffMessage = this.getPreviousMessage(rowID);
+      } else {
+        diffMessage = this.getNextMessage(rowID);
+      }
+
+      messageContent = (
+        <View>
+          {this.renderDate(rowData, rowID)}
+          <Message
+            rowData={rowData}
+            rowID={rowID}
+            onErrorButtonPress={this.props.onErrorButtonPress}
+            displayNames={this.props.displayNames}
+            diffMessage={diffMessage}
+            position={rowData.position}
+            forceRenderImage={this.props.forceRenderImage}
+            onImagePress={this.props.onImagePress}
+            renderCustomText={this.props.renderCustomText}
+
+            styles={this.styles}
+          />
+        </View>
+      );
     }
-
     return (
-      <View>
-        {this.renderDate(rowData, rowID)}
-        <Message
-          rowData={rowData}
-          rowID={rowID}
-          onErrorButtonPress={this.props.onErrorButtonPress}
-          displayNames={this.props.displayNames}
-          diffMessage={diffMessage}
-          position={rowData.position}
-          forceRenderImage={this.props.forceRenderImage}
-          onImagePress={this.props.onImagePress}
-          renderCustomText={this.props.renderCustomText}
-
-          styles={this.styles}
-        />
-      </View>
-    )
+      <View onLayout={(event) => this.props.onMessageLayout(event, rowData)}>
+        {messageContent}
+       </View>
+     )
   }
 
   onChangeText(text) {
@@ -512,7 +523,9 @@ class GiftedMessenger extends Component {
             keyboardShouldPersistTaps={false} // @issue keyboardShouldPersistTaps={false} + textInput focused = 2 taps are needed to trigger the ParsedText links
             keyboardDismissMode='interactive'
           */
-          onScroll={this.handleScroll}
+          {...this.props}
+
+          onScroll={this.handleScroll.bind(this)}
           keyboardShouldPersistTaps={typeof this.props.keyboardShouldPersistTaps === 'undefined' ? true : this.props.keyboardShouldPersistTaps}
           keyboardDismissMode={this.props.keyboardDismissMode || 'interactive'}
 
@@ -521,7 +534,7 @@ class GiftedMessenger extends Component {
           pageSize={this.props.pageSize}
 
 
-          {...this.props}
+          // {...this.props}
         />
 
       </Animated.View>
@@ -531,6 +544,9 @@ class GiftedMessenger extends Component {
     if (this._listView.scrollProperties.offset <= PULLDOWN_DISTANCE  &&  !this.state.isLoadingEarlierMessages) {
       this.preLoadEarlierMessages()
     }
+
+    this.props.onScroll(e);
+
     if (Platform.OS !== 'android'  ||  this.state.menuButtonShow)
       return
     const { navigator } = this.props
